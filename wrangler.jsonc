@@ -1,0 +1,28 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "siteshift-ai",
+	"main": ".open-next/worker.js",
+	"compatibility_date": "2025-06-01",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	// Workers AI (embeddings). Always runs remotely, even in local dev.
+	"ai": {
+		"binding": "AI"
+	},
+	// Vectorize has no local emulator; "remote": true lets local dev hit the real index.
+	"vectorize": [
+		{
+			"binding": "VECTORIZE",
+			"index_name": "siteshift-docs",
+			"remote": true
+		}
+	],
+	"vars": {
+		"CLAUDE_MODEL": "claude-sonnet-5-5"
+	}
+}

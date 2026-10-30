@@ -1,0 +1,4 @@
+# One public URL per line. Good candidates:
+#   Sitecore docs pages on headless components, Pages editing, field types, Content SDK
+#   Next.js App Router docs pages you rely on
+# Don't add anything internal or confidential from work.

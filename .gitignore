@@ -1,0 +1,10 @@
+node_modules
+.next
+.open-next
+.wrangler
+.env
+.dev.vars
+__pycache__
+.venv
+evals/results.md
+scripts.env

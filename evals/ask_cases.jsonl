@@ -1,0 +1,5 @@
+{"question": "What field type should I use for a call to action link?", "must_include": ["General Link"], "expect_citation": true}
+{"question": "Is 'Click here' acceptable link text?", "must_include": ["not"], "expect_citation": true}
+{"question": "How should click tracking be added to components?", "must_include": ["data-track"], "expect_citation": true}
+{"question": "What is the capital of Australia?", "must_include": ["sources"], "expect_citation": false}
+{"question": "Draft an event page for a spring open house at our Harrisburg clinic.", "expect_draft": true}
