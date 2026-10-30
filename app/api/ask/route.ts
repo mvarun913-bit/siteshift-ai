@@ -37,6 +37,9 @@ export async function POST(req: Request) {
     if (!question?.trim()) return NextResponse.json({ error: "Type a question first." }, { status: 400 });
 
     const sources = await retrieve(question);
+    if (sources.length === 0) {
+      return NextResponse.json({ answer: "The indexed docs don't cover this, so I won't guess. Try rephrasing, or add a relevant doc to the index.", draft: null, sources: [], refused: true });
+    }
     const r = await claude({
       system: SYSTEM,
       tools: TOOLS,
