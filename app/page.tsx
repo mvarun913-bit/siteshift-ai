@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 type Mode = "ask" | "convert";
 type SourceRef = { title: string; url: string; score?: number };
@@ -84,7 +85,7 @@ function AskPanel() {
         {!res && !busy && <p className="text-sm text-muted">Answers cite the docs they came from. Ask it to draft a page to see a content item draft.</p>}
         {res && (
           <>
-            <article className="whitespace-pre-wrap rounded-md border border-line bg-panel p-4 text-[15px] leading-relaxed">{res.answer}</article>
+            <article className="rounded-md border border-line bg-panel p-4 text-[15px] leading-relaxed [&_p]:mb-3 [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_code]:rounded [&_code]:bg-code [&_code]:px-1 [&_code]:font-mono [&_code]:text-[13px] [&_strong]:font-semibold"><ReactMarkdown>{res.answer}</ReactMarkdown></article>
             {res.draft && (
               <div>
                 <h2 className="mb-2 text-sm font-medium">Draft content item (not saved)</h2>
