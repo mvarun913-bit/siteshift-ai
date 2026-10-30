@@ -5,7 +5,7 @@ const EMBED_MODEL = "@cf/baai/bge-base-en-v1.5";
 
 export type Source = { id: string; title: string; url: string; text: string; score: number };
 
-export async function retrieve(query: string, topK = 5, minScore = 0.55): Promise<Source[]> {
+export async function retrieve(query: string, topK = 8, minScore = 0.55): Promise<Source[]> {
   const { env } = await getCloudflareContext({ async: true });
   const emb = (await env.AI.run(EMBED_MODEL, { text: [query] })) as { data: number[][] };
   const res = await env.VECTORIZE.query(emb.data[0], { topK, returnMetadata: "all" });

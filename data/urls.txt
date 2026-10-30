@@ -1,4 +1,7 @@
-# One public URL per line. Good candidates:
-#   Sitecore docs pages on headless components, Pages editing, field types, Content SDK
-#   Next.js App Router docs pages you rely on
-# Don't add anything internal or confidential from work.
+# Sitecore Content SDK (SitecoreAI)
+https://doc.sitecore.com/sai/en/developers/content-sdk/20/components-for-rendering-sitecore-fields.html
+https://doc.sitecore.com/sai/en/developers/sitecoreai/build-your-first-component.html
+https://doc.sitecore.com/xmc/en/developers/content-sdk/creating-a-content-sdk-app.html
+# JSS (older headless, useful for migration questions)
+https://doc.sitecore.com/sai/en/developers/jss/22/jss-sai/create-a-new-component-in-a-jss-next-js-app.html
+https://doc.sitecore.com/xp/en/developers/hd/latest/sitecore-headless-development/jss-components-for-rendering-sitecore-fields-in-next-js-applications.html
