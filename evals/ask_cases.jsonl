@@ -9,4 +9,4 @@
 {"id":"refuse-personalize","question":"How do I configure Sitecore personalization rules?","expect_refusal":true}
 {"id":"refuse-price","question":"What's the price of a SitecoreAI license?","expect_refusal":true}
 {"id":"refuse-pizza","question":"What's the best pizza in New York?","expect_refusal":true}
-{"id":"false-premise","question":"Why does the Content SDK require jQuery?","expect_refusal":true}
+{"id":"false-premise","question":"Why does the Content SDK require jQuery?","expect_refusal":false,"expected_source":"content-sdk","must_mention":["jQuery"],"must_mention_any":["doesn't say","does not say","doesn't require","does not require","premise","never mention","no mention","not mentioned"]}

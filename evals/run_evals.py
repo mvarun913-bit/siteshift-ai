@@ -112,6 +112,10 @@ def score_case(case, data, k):
             "has_citations": len(cited) > 0,
             "citations_valid": not invalid,
         }
+        # Optional: at least one of these phrases must appear (e.g. a premise correction).
+        any_terms = case.get("must_mention_any")
+        if any_terms:
+            checks["mentions_any_ok"] = any(t.lower() in answer.lower() for t in any_terms)
 
     result["checks"] = checks
     result["pass"] = all(checks.values())
