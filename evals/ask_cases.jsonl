@@ -1,5 +1,12 @@
-{"question": "What field type should I use for a call to action link?", "must_include": ["General Link"], "expect_citation": true}
-{"question": "Is 'Click here' acceptable link text?", "must_include": ["not"], "expect_citation": true}
-{"question": "How should click tracking be added to components?", "must_include": ["data-track"], "expect_citation": true}
-{"question": "What is the capital of Australia?", "must_include": ["sources"], "expect_citation": false}
-{"question": "Draft an event page for a spring open house at our Harrisburg clinic.", "expect_draft": true}
+{"id":"lookup-link","question":"Which component renders a General Link field?","expect_refusal":false,"expected_source":"content-sdk/20/components-for-rendering","must_mention":["Link"]}
+{"id":"lookup-richtext","question":"What component renders a Rich Text field?","expect_refusal":false,"expected_source":"content-sdk/20/components-for-rendering","must_mention":["RichText"]}
+{"id":"lookup-package","question":"Which package do I import Content SDK field components from?","expect_refusal":false,"expected_source":"content-sdk/20/components-for-rendering","must_mention":["@sitecore-content-sdk/nextjs"]}
+{"id":"conv-cta","question":"What field type should a call to action use?","expect_refusal":false,"expected_source":"conventions","must_mention":["General Link"]}
+{"id":"conv-readmore","question":"Is 'Read more' acceptable link text?","expect_refusal":false,"expected_source":"conventions","must_mention":["descriptive"]}
+{"id":"conv-tracking","question":"How do we add click tracking?","expect_refusal":false,"expected_source":"conventions","must_mention":["data-track"]}
+{"id":"conv-contrast","question":"What's our minimum color contrast for body text?","expect_refusal":false,"expected_source":"conventions","must_mention":["4.5:1"]}
+{"id":"paraphrase-image","question":"How do I show a picture that authors can edit?","expect_refusal":false,"expected_source":"content-sdk/20/components-for-rendering","must_mention":["Image"]}
+{"id":"refuse-personalize","question":"How do I configure Sitecore personalization rules?","expect_refusal":true}
+{"id":"refuse-price","question":"What's the price of a SitecoreAI license?","expect_refusal":true}
+{"id":"refuse-pizza","question":"What's the best pizza in New York?","expect_refusal":true}
+{"id":"false-premise","question":"Why does the Content SDK require jQuery?","expect_refusal":true}
