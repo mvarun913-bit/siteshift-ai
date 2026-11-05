@@ -18,7 +18,7 @@ export async function retrieve(
   query: string,
   topK = 8,
   minScore = 0.55,
-  maxPerDoc = 2,
+  maxPerDoc = 3,
   candidateK = 20, // Vectorize's max topK when returning metadata
 ): Promise<Source[]> {
   const { env } = await getCloudflareContext({ async: true });

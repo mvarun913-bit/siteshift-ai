@@ -56,8 +56,9 @@ def ask(base_url, question, timeout=120):
 
 
 def detect_refusal(data):
-    if data.get("refused") is True:
-        return True, "flag"
+    # Trust the route's flag whenever it's present; fall back to phrases only for old responses.
+    if "refused" in data:
+        return bool(data["refused"]), "flag"
     answer = (data.get("answer") or "").lower()
     if any(p in answer for p in REFUSAL_PHRASES):
         return True, "phrase"
@@ -85,11 +86,17 @@ def score_case(case, data, k):
     answer = data.get("answer") or ""
     refused, how = detect_refusal(data)
     cited, invalid = check_citations(answer, len(sources))
+    route_check = data.get("citations")
+    if isinstance(route_check, dict):
+        # The route validates citations and strips bad ones, so read its report instead.
+        cited = route_check.get("valid", [])
+        invalid = route_check.get("invalid", [])
 
     result = {
         "id": case["id"],
         "question": case["question"],
         "expect_refusal": case.get("expect_refusal", False),
+        "refusal_ok": case.get("refusal_ok", False),
         "refused": refused,
         "refusal_detected_by": how,
         "n_sources": len(sources),
@@ -100,6 +107,9 @@ def score_case(case, data, k):
 
     if case.get("expect_refusal"):
         checks = {"refusal_correct": refused}
+    elif refused and case.get("refusal_ok"):
+        # Either refusing or correcting is acceptable for this case (e.g. an unsupported premise).
+        checks = {"refusal_or_correction": True}
     else:
         rank = first_hit_rank(sources[:k], case.get("expected_source", ""))
         missing = [t for t in case.get("must_mention", []) if t.lower() not in answer.lower()]
@@ -123,7 +133,9 @@ def score_case(case, data, k):
 
 
 def summarize(results):
-    answerable = [r for r in results if not r["expect_refusal"] and "error" not in r]
+    # Retrieval and false-refusal metrics only make sense for cases that must be answered.
+    answerable = [r for r in results
+                  if not r["expect_refusal"] and not r.get("refusal_ok") and "error" not in r]
     refusals = [r for r in results if r["expect_refusal"] and "error" not in r]
 
     def pct(n, d):

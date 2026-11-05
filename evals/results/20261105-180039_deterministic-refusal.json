@@ -1,0 +1,298 @@
+{
+  "tag": "deterministic-refusal",
+  "timestamp": "20261105-180039",
+  "config": {
+    "base_url": "http://localhost:3002",
+    "k": 8,
+    "cases_file": "/Users/varunmunigala/projects/siteshift-ai/evals/ask_cases.jsonl"
+  },
+  "summary": {
+    "cases": 12,
+    "errors": 0,
+    "pass_rate_pct": 75.0,
+    "hit_at_k_pct": 100.0,
+    "mrr": 0.778,
+    "refusal_accuracy_pct": 100.0,
+    "false_refusals": 2,
+    "mentions_ok_pct": 88.9,
+    "invalid_citation_cases": 0,
+    "avg_latency_s": 3.75,
+    "input_tokens": 48797,
+    "output_tokens": 3561
+  },
+  "results": [
+    {
+      "id": "lookup-link",
+      "question": "Which component renders a General Link field?",
+      "expect_refusal": false,
+      "refused": false,
+      "refusal_detected_by": "flag",
+      "n_sources": 5,
+      "n_citations": 5,
+      "invalid_citations": [],
+      "answer_preview": "The `Link` component renders a Sitecore General Link field. The `field` property is required, and it must be a General Link field type [1].\n\n- **Content SDK:** The `Link` component takes a `field` whose data has a `value` object and `metadata`. The `value` object holds link properties such as `href`",
+      "rank": 1,
+      "missing_terms": [],
+      "checks": {
+        "not_refused": true,
+        "hit": true,
+        "mentions_ok": true,
+        "has_citations": true,
+        "citations_valid": true
+      },
+      "pass": true,
+      "latency_s": 4.32,
+      "input_tokens": 3237,
+      "output_tokens": 421
+    },
+    {
+      "id": "lookup-richtext",
+      "question": "What component renders a Rich Text field?",
+      "expect_refusal": false,
+      "refused": false,
+      "refusal_detected_by": "flag",
+      "n_sources": 7,
+      "n_citations": 3,
+      "invalid_citations": [],
+      "answer_preview": "The `RichText` component renders Sitecore Rich Text fields. [1]\n\n- **Import:** In the Content SDK, the helpers (Text, RichText, Image, Link) come from `@sitecore-content-sdk/nextjs`. Using them keeps fields editable in Pages. [6] In JSS, the example imports `RichText` from `@sitecore-jss/sitecore-js",
+      "rank": 3,
+      "missing_terms": [],
+      "checks": {
+        "not_refused": true,
+        "hit": true,
+        "mentions_ok": true,
+        "has_citations": true,
+        "citations_valid": true
+      },
+      "pass": true,
+      "latency_s": 3.44,
+      "input_tokens": 4413,
+      "output_tokens": 338
+    },
+    {
+      "id": "lookup-package",
+      "question": "Which package do I import Content SDK field components from?",
+      "expect_refusal": false,
+      "refused": false,
+      "refusal_detected_by": "flag",
+      "n_sources": 8,
+      "n_citations": 5,
+      "invalid_citations": [],
+      "answer_preview": "Import all of the Content SDK field components from `@sitecore-content-sdk/nextjs` [1]. This covers `DateField`, `File`, `Image`, `Link`, `Text` and `RichText`.\n\n- `Link` and `RichText` have Next.js-specific implementations in that package. They add internal link detection, prefetching, and client-s",
+      "rank": 1,
+      "missing_terms": [],
+      "checks": {
+        "not_refused": true,
+        "hit": true,
+        "mentions_ok": true,
+        "has_citations": true,
+        "citations_valid": true
+      },
+      "pass": true,
+      "latency_s": 3.1,
+      "input_tokens": 4912,
+      "output_tokens": 344
+    },
+    {
+      "id": "conv-cta",
+      "question": "What field type should a call to action use?",
+      "expect_refusal": false,
+      "refused": true,
+      "refusal_detected_by": "flag",
+      "n_sources": 7,
+      "n_citations": 2,
+      "invalid_citations": [],
+      "answer_preview": "The sources don't say which field type a call to action should use. The relevant passage in the \"Headless component conventions\" source [6] is cut off. It reads \"\u2026ion use General Link so authors control both the URL and the link text.\" The start of that sentence is missing, so I can't confirm it ref",
+      "rank": 6,
+      "missing_terms": [],
+      "checks": {
+        "not_refused": false,
+        "hit": true,
+        "mentions_ok": true,
+        "has_citations": true,
+        "citations_valid": true
+      },
+      "pass": false,
+      "latency_s": 6.49,
+      "input_tokens": 4437,
+      "output_tokens": 680
+    },
+    {
+      "id": "conv-readmore",
+      "question": "Is 'Read more' acceptable link text?",
+      "expect_refusal": false,
+      "refused": false,
+      "refusal_detected_by": "flag",
+      "n_sources": 7,
+      "n_citations": 2,
+      "invalid_citations": [],
+      "answer_preview": "No. Source [1] says link text must describe the destination. It says \"Click here\" and \"Read more\" on their own are not allowed. [1]\n\nThe wording \"on their own\" matters. The link text has to say where the link goes, for example by naming the article or page it leads to. A bare \"Read more\" doesn't do ",
+      "rank": 1,
+      "missing_terms": [
+        "descriptive"
+      ],
+      "checks": {
+        "not_refused": true,
+        "hit": true,
+        "mentions_ok": false,
+        "has_citations": true,
+        "citations_valid": true
+      },
+      "pass": false,
+      "latency_s": 3.23,
+      "input_tokens": 4358,
+      "output_tokens": 183
+    },
+    {
+      "id": "conv-tracking",
+      "question": "How do we add click tracking?",
+      "expect_refusal": false,
+      "refused": false,
+      "refusal_detected_by": "flag",
+      "n_sources": 8,
+      "n_citations": 2,
+      "invalid_citations": [],
+      "answer_preview": "Attach click tracking with `data-track` attributes that the analytics script reads, for example `data-track=\"promo-cta\"`. Don't use inline `onclick` handlers. [1]\n\nThe sources don't say how to add the attribute to a specific component. One related point is that JSS's `Link` component accepts extra a",
+      "rank": 1,
+      "missing_terms": [],
+      "checks": {
+        "not_refused": true,
+        "hit": true,
+        "mentions_ok": true,
+        "has_citations": true,
+        "citations_valid": true
+      },
+      "pass": true,
+      "latency_s": 2.48,
+      "input_tokens": 4660,
+      "output_tokens": 177
+    },
+    {
+      "id": "conv-contrast",
+      "question": "What's our minimum color contrast for body text?",
+      "expect_refusal": false,
+      "refused": false,
+      "refusal_detected_by": "flag",
+      "n_sources": 8,
+      "n_citations": 1,
+      "invalid_citations": [],
+      "answer_preview": "Your conventions set the minimum color contrast for body text at 4.5:1 [1].",
+      "rank": 1,
+      "missing_terms": [],
+      "checks": {
+        "not_refused": true,
+        "hit": true,
+        "mentions_ok": true,
+        "has_citations": true,
+        "citations_valid": true
+      },
+      "pass": true,
+      "latency_s": 6.27,
+      "input_tokens": 4558,
+      "output_tokens": 30
+    },
+    {
+      "id": "paraphrase-image",
+      "question": "How do I show a picture that authors can edit?",
+      "expect_refusal": false,
+      "refused": false,
+      "refusal_detected_by": "flag",
+      "n_sources": 8,
+      "n_citations": 4,
+      "invalid_citations": [],
+      "answer_preview": "Use the `Image` component from the Content SDK. It renders editable, responsive images [2].\n\n**Steps**\n\n1. Import it into your component [2]:\n   ```tsx\n   import { Image } from '@sitecore-content-sdk/nextjs';\n   ```\n\n2. Pass the image field as the `field` prop [2]:\n   ```tsx\n   <Image field={props.f",
+      "rank": 2,
+      "missing_terms": [],
+      "checks": {
+        "not_refused": true,
+        "hit": true,
+        "mentions_ok": true,
+        "has_citations": true,
+        "citations_valid": true
+      },
+      "pass": true,
+      "latency_s": 4.55,
+      "input_tokens": 4880,
+      "output_tokens": 495
+    },
+    {
+      "id": "refuse-personalize",
+      "question": "How do I configure Sitecore personalization rules?",
+      "expect_refusal": true,
+      "refused": true,
+      "refusal_detected_by": "flag",
+      "n_sources": 8,
+      "n_citations": 8,
+      "invalid_citations": [],
+      "answer_preview": "The provided sources don't explain how to configure Sitecore personalization rules. They cover these topics:\n- Creating components in JSS Next.js apps [1][8].\n- Building a first component in SitecoreAI [3][4].\n- Rendering fields with the JSS `Text` and `RichText` components [5][7].\n- Headless compon",
+      "checks": {
+        "refusal_correct": true
+      },
+      "pass": true,
+      "latency_s": 2.76,
+      "input_tokens": 4550,
+      "output_tokens": 209
+    },
+    {
+      "id": "refuse-price",
+      "question": "What's the price of a SitecoreAI license?",
+      "expect_refusal": true,
+      "refused": true,
+      "refusal_detected_by": "flag",
+      "n_sources": 8,
+      "n_citations": 0,
+      "invalid_citations": [],
+      "answer_preview": "The sources don't include any pricing or licensing information for SitecoreAI. They cover building components, creating a Content SDK app, and rendering fields with JSS. To get pricing, contact Sitecore sales or check Sitecore's official pricing and licensing pages.",
+      "checks": {
+        "refusal_correct": true
+      },
+      "pass": true,
+      "latency_s": 2.06,
+      "input_tokens": 4311,
+      "output_tokens": 96
+    },
+    {
+      "id": "refuse-pizza",
+      "question": "What's the best pizza in New York?",
+      "expect_refusal": true,
+      "refused": true,
+      "refusal_detected_by": "flag",
+      "n_sources": 0,
+      "n_citations": 0,
+      "invalid_citations": [],
+      "answer_preview": "The indexed docs don't cover this, so I won't guess. Try rephrasing, or add a relevant doc to the index.",
+      "checks": {
+        "refusal_correct": true
+      },
+      "pass": true,
+      "latency_s": 0.38,
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "id": "false-premise",
+      "question": "Why does the Content SDK require jQuery?",
+      "expect_refusal": false,
+      "refused": true,
+      "refusal_detected_by": "flag",
+      "n_sources": 8,
+      "n_citations": 3,
+      "invalid_citations": [],
+      "answer_preview": "The sources don't mention jQuery, so they don't say whether Content SDK requires it. I can't confirm the premise, and I can't confirm that it's wrong either.\n\nThe sources do show that Content SDK's field-rendering components (`Text`, `RichText`, `Image`, `Link`, `File`, `DateField`) are imported fro",
+      "rank": 1,
+      "missing_terms": [],
+      "checks": {
+        "not_refused": false,
+        "hit": true,
+        "mentions_ok": true,
+        "has_citations": true,
+        "citations_valid": true,
+        "mentions_any_ok": true
+      },
+      "pass": false,
+      "latency_s": 5.9,
+      "input_tokens": 4481,
+      "output_tokens": 588
+    }
+  ]
+}

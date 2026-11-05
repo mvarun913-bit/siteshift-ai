@@ -63,20 +63,61 @@ def load_documents():
     return docs
 
 
+_SENT_END = re.compile(r"(?<=[.!?])\s+")
+
+
+def _tail(text: str, n: int = None) -> str:
+    """Last ~n chars of text, starting at a sentence boundary (or at least a word boundary)."""
+    n = OVERLAP if n is None else n
+    if len(text) <= n:
+        return text
+    tail = text[-n:]
+    m = _SENT_END.search(tail)
+    if m and m.end() < len(tail):
+        return tail[m.end():]
+    space = tail.find(" ")
+    return tail[space + 1:] if space != -1 else tail
+
+
+def _split_long(p: str):
+    """Split a paragraph longer than CHUNK_CHARS into pieces at sentence boundaries."""
+    pieces, cur = [], ""
+    for s in _SENT_END.split(p):
+        while len(s) > CHUNK_CHARS:  # one huge sentence: cut at a word boundary
+            cut = s.rfind(" ", 0, CHUNK_CHARS)
+            cut = cut if cut > 0 else CHUNK_CHARS
+            if cur:
+                pieces.append(cur)
+                cur = ""
+            pieces.append(s[:cut])
+            s = s[cut:].lstrip()
+        if len(cur) + len(s) + 1 <= CHUNK_CHARS:
+            cur = f"{cur} {s}" if cur else s
+        else:
+            pieces.append(cur)
+            cur = s
+    if cur:
+        pieces.append(cur)
+    return pieces
+
+
 def chunk(text: str):
-    """Paragraph-aware chunks of ~CHUNK_CHARS with OVERLAP carried over."""
+    """Paragraph-aware chunks of ~CHUNK_CHARS. Overlap and splits snap to sentence/word boundaries."""
     paras = [p.strip() for p in re.split(r"\n\s*\n", text) if p.strip()]
-    chunks, cur = [], ""
+    units = []
     for p in paras:
-        if len(cur) + len(p) + 2 <= CHUNK_CHARS:
-            cur = f"{cur}\n\n{p}" if cur else p
+        units.extend(_split_long(p) if len(p) > CHUNK_CHARS else [p])
+
+    chunks, cur = [], ""
+    for u in units:
+        if len(cur) + len(u) + 2 <= CHUNK_CHARS:
+            cur = f"{cur}\n\n{u}" if cur else u
             continue
         if cur:
             chunks.append(cur)
-        while len(p) > CHUNK_CHARS:  # split very long paragraphs
-            chunks.append(p[:CHUNK_CHARS])
-            p = p[CHUNK_CHARS - OVERLAP:]
-        cur = (chunks[-1][-OVERLAP:] + "\n\n" + p) if chunks else p
+            cur = _tail(cur) + "\n\n" + u
+        else:
+            cur = u
     if cur:
         chunks.append(cur)
     return [c for c in chunks if len(c) > 80]
