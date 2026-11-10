@@ -6,6 +6,8 @@
 	"compatibility_flags": [
 		"nodejs_compat"
 	],
+	// Only the workers.dev URL is public; no per-version preview URLs.
+	"preview_urls": false,
 	"assets": {
 		"directory": ".open-next/assets",
 		"binding": "ASSETS"
@@ -20,6 +22,15 @@
 			"binding": "VECTORIZE",
 			"index_name": "siteshift-docs",
 			"remote": true
+		}
+	],
+	// Per-visitor limit on /api/ask: 10 requests per 60 seconds, keyed on CF-Connecting-IP.
+	// namespace_id is an arbitrary integer, unique within the Cloudflare account.
+	"ratelimits": [
+		{
+			"name": "ASK_LIMITER",
+			"namespace_id": "1001",
+			"simple": { "limit": 10, "period": 60 }
 		}
 	],
 	"vars": {

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { claude, textOf, toolUseOf } from "@/lib/llm";
 import { retrieve, formatSources } from "@/lib/rag";
 
@@ -73,6 +74,14 @@ function validateCitations(answer: string, sourceCount: number) {
 
 export async function POST(req: Request) {
   try {
+    // Rate limit first, before any retrieval or Claude call can spend money.
+    const { env } = await getCloudflareContext({ async: true });
+    const ip = req.headers.get("CF-Connecting-IP") ?? "unknown";
+    const { success } = await env.ASK_LIMITER.limit({ key: ip });
+    if (!success) {
+      return NextResponse.json({ error: "Too many questions; please wait a minute." }, { status: 429 });
+    }
+
     const { question } = (await req.json()) as { question?: string };
     if (!question?.trim()) return NextResponse.json({ error: "Type a question first." }, { status: 400 });
 
