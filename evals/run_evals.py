@@ -46,7 +46,8 @@ def ask(base_url, question, timeout=120):
     req = urllib.request.Request(
         f"{base_url}/api/ask",
         data=body,
-        headers={"Content-Type": "application/json"},
+        # Cloudflare blocks the default "Python-urllib" User-Agent (error 1010).
+        headers={"Content-Type": "application/json", "User-Agent": "siteshift-evals/1.0"},
         method="POST",
     )
     start = time.time()
